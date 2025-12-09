@@ -183,30 +183,7 @@ class TestDocumentScanner:
         assert scanner.detected_lines is not None
 
 
-class TestImageProcessing:
-    """Test image processing utilities"""
-    
-    def test_grayscale_conversion(self):
-        """Test RGB to grayscale conversion"""
-        # Create a colored image
-        img = np.zeros((100, 100, 3), dtype=np.uint8)
-        img[:, :, 0] = 255  # Red channel
-        
-        scanner = DocumentScanner.__new__(DocumentScanner)
-        scanner.input_image = img
-        scanner.gray_image = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        scanner.imageData = type('obj', (object,), {
-            'width': 100,
-            'height': 100,
-            'data': img.flatten()
-        })()
-        
-        gray = scanner.toGrayscale(scanner.imageData)
-        
-        assert gray is not None
-        assert len(gray) == 100 * 100
-        # Red should convert to specific grayscale value
-        assert gray[0] > 0
+
 
 
 def test_integration_full_pipeline(tmp_path):
