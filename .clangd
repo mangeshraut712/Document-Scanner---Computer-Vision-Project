@@ -1,0 +1,14 @@
+CompileFlags:
+  Remove: [-W*]
+  
+Diagnostics:
+  Suppress: '*'
+  ClangTidy:
+    Remove: '*'
+
+# Exclude MATLAB files from C/C++ analysis
+If:
+  PathMatch: .*\.m$
+  
+Index:
+  Background: Skip

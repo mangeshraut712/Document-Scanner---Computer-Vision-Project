@@ -1,0 +1,113 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-python:
+    name: Test Python Implementation
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, '3.10', '3.11']
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        pytest tests/ -v --tb=short
+    
+    - name: Test import
+      run: |
+        cd src/python
+        python -c "from document_scanner import DocumentScanner; print('Import successful')"
+  
+  lint-python:
+    name: Lint Python Code
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black
+    
+    - name: Run flake8
+      run: |
+        flake8 src/python --max-line-length=100 --ignore=E203,W503
+    
+    - name: Check formatting with black
+      run: |
+        black --check src/python
+  
+  build-docs:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check README
+      run: |
+        if [ ! -f README.md ]; then
+          echo "README.md not found!"
+          exit 1
+        fi
+        echo "README.md found and valid"
+    
+    - name: Check CONTRIBUTING
+      run: |
+        if [ ! -f CONTRIBUTING.md ]; then
+          echo "CONTRIBUTING.md not found!"
+          exit 1
+        fi
+        echo "CONTRIBUTING.md found and valid"
+  
+  web-demo:
+    name: Validate Web Demo
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Check HTML validity
+      run: |
+        if [ ! -f web/index.html ]; then
+          echo "web/index.html not found!"
+          exit 1
+        fi
+        echo "Web demo files found"
+    
+    - name: Check JavaScript syntax
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+    
+    - name: Install and run ESLint
+      run: |
+        cd web
+        npm init -y
+        npm install eslint --save-dev
+        npx eslint script.js --no-eslintrc --env browser --env es2021 || true

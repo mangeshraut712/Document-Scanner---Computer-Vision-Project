@@ -1,0 +1,176 @@
+
+\title{Computer Vision}
+\author{
+        Final Project\\
+        Mangesh Raut
+}
+\date{}
+\documentclass[12pt]{article}
+\usepackage[margin=0.7in]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{graphicx}
+
+\begin{document}
+\maketitle
+
+\subsection*{Introduction}
+
+In this final assignment, we will combine several concepts from earlier in the course with new concepts of line parameterization and image rectification. In particular, you will be developing a "scanner app".\\ 
+
+Throughout this project, you will use the image you took of a piece of paper. \\
+
+You may work with one other person if you like.
+
+\subsection*{Grading Scheme}
+
+\begin{enumerate}
+  \item \textbf{Edge Detection (10pts)}
+  \item \textbf{Hough Transform (20pts)}
+  \item \textbf{Line Selection (20pts)}
+  \item \textbf{Rectification (30pts)}
+  \item \textbf{Works on more than one sample image (10pts)}
+  \item \textbf{Additional tests (10pts)}
+\end{enumerate}
+
+
+\newpage
+
+
+\section*{Part 1: Edge Detection}
+First, take your image and apply edge detection to it. Hopefully, you did this successfully in HW3. If not, now's the time to make it work!\\
+
+\textbf{Notes:}
+\begin{itemize}
+  \item You may use Matlab functions to convert your image to grayscale.
+  \item You may use Matlab functions to obtain smoothing and edge kernels.
+  \item You \textbf{may not} use Matlab to do the smoothing and/or gradient extraction for you (but you \textbf{may} just be able to use \texttt{conv2} with the aforementioned kernels).
+  \item You \textbf{may not} use any Matlab functions to provide the edge pixels for you.
+\end{itemize}
+
+For your report, show the original image and the edge image.
+
+    \includegraphics[width=\textwidth]{Edge Image 1.png} 
+    \includegraphics[width=\textwidth]{Edge Image 2.png} \\
+
+
+\newpage
+
+\section*{Part 2: Hough Transform for Line Detection}
+
+Next, let’s attempt to find lines in your edge image by applying a Hough Transform to the edge pixels.\\
+
+Recall the form of a line in polar coordinates is:
+\[ \cos(\theta) x + \sin(\theta) y = r \]
+
+For each edge pixel, vary $0 \leq \theta \leq 180$ and compute the associated $r$ value. Quantize these $(\theta, r)$ pairs and "bin" them to create a 2D histogram. You can decide how "fine" you want your steps for each of the parameters to be. Visualize this 2D histogram as an image.\\
+
+You may not use any Hough transform functions in Matlab.
+
+{\includegraphics[width=\textwidth]{Hough Transform for Line Image 1.png}}
+{\includegraphics[width=\textwidth]{Hough Transform for Line Image 2.png}}
+
+
+\newpage
+
+\section*{Part 3: Relevant Line Identification}
+From the Hough transform, you will likely be able to identify locations of local maxima. The difficulty is grabbing the correct subset to form the four lines of your piece of paper.\\
+
+I'm going to let you think about how to do this yourself. Keep in mind that this should be automated such that it could be applied to another test image. To get you started, here are some ideas:
+
+\begin{enumerate}
+  \item Find local maxima over some fixed window size.
+  \item Apply some sort of clustering.
+  \item Enforce some constraints based on the nature of the problem (in this case, finding the four edges of a plane/paper).
+  \item Set a threshold.
+\end{enumerate}
+
+In your writeup, explain how you selected potential lines (including citations, if necessary).\\
+
+In the given code, the selection of potential lines is based on the peaks detected in the Hough transform image. The process of identifying peaks in the Hough transform is a common technique used in line detection. \\
+
+Hough Transform: The Hough transform is a popular technique for detecting lines in an image. It works by converting the image space to a parameter space (Hough space) where lines are represented by points. In the Hough space, each point represents a potential line.\\
+
+Peak Detection: Once the Hough transform is computed, peaks in the Hough space need to be identified as potential lines. The code uses a simple peak detection algorithm to find the highest peaks in the Hough transform image. The algorithm iteratively selects the highest peak, adds it to the peaks list, and suppresses neighboring bins. This process continues until a certain number of peaks is reached.\\
+
+Thresholding: To avoid selecting weak and noisy peaks, a threshold is applied to the Hough transform image. Only peaks with values above the threshold are considered as potential lines. In the code, the threshold is set to 0.5 times the maximum value of the Hough transform.\\
+
+The approach used in the given code is a straightforward peak detection algorithm that finds the highest peaks above a threshold. However, it's worth mentioning that there are more advanced techniques available for peak detection, such as non-maximum suppression, hysteresis thresholding, or adaptive thresholding which is not used in this final project but maybe used in future. These techniques can further improve the accuracy and robustness of line detection.\\
+
+Finally, superimpose these locations on your Hough transform and draw the lines on your edge image.\\
+
+\textbf{NOTE:} If you aren't able to do this automatically, just let us know and "manually" select them. That way, you can move on to the last part.
+
+  {\includegraphics[width=\textwidth]{Automatic borders for Image 1.png}}
+  {\includegraphics[width=\textwidth]{Detected Peaks for Image 1.png}}
+  {\includegraphics[width=\textwidth]{Automatic borders for Image 2.png}}
+  {\includegraphics[width=\textwidth]{Detected Peaks for Image 2.png}}
+
+\newpage
+
+\section*{Part 4: Line Intersections}
+Next, you'll want to find the intersections of your lines to establish the four corners of your paper.\\
+
+From the polar form of the line, $\cos(\theta) x + \sin(\theta) y = r$, you should be able to get the slope-intercept form of a line, $y = mx + b$.\\
+
+Go through your potential lines and compute their intersections. Use this set of intersection points to determine the four corner points of your paper.\\
+
+ {\includegraphics[width=\textwidth]{Manual borders for Image 1.png}}
+ {\includegraphics[width=\textwidth]{Manual borders for Image 2.png}}
+
+\newpage
+
+\section*{Part 5: Image Rectification}
+Now we should be able to rectify our paper! We will assume a standard 8.5 × 11 letter paper size. Based on this aspect ratio, create a "blank" image (make it large enough to show details, likely a similar size to the original image). \\
+
+The four corners of this blank image should correspond to the four intersection points you discovered. Using these four correspondences, compute the homography matrix.\\
+
+Once you have your homography matrix, go through each location in your new image and compute its corresponding location in the original image. Copy the pixel at that location to your new image.\\
+
+Show your newly rectified image!\\
+
+\textbf{NOTE:} You may not use any Matlab functions to do this for you. This includes (but is not comprehensively limited to): \\
+\texttt{imtransform}, \\
+\texttt{imwarp}.\\
+
+{\includegraphics[width=\textwidth]{Rectified Image 1.png}}
+ {\includegraphics[width=\textwidth]{Rectified Image 2.png}}
+
+\newpage
+
+\section*{Part 6: Another Example!}
+Finally, we want to make sure that your implementation works on another example without having to change anything in your code.\\
+
+Provide a second input and output image showing this.\\
+
+{\includegraphics[width=\textwidth]{input1.png}}
+ {\includegraphics[width=\textwidth]{input2.png}}
+
+
+\textbf{Submission}
+\begin{enumerate}
+  \item Assignments must be submitted via Bd Learn.
+  \item Submit a single compressed file (zip, tar, etc.) containing:
+    \begin{itemize}
+      \item A PDF file containing:
+        \begin{itemize}
+          \item Your input and edge image for Part 1.
+          \item Your 2D Hough Transform histogram image for Part 2.
+          \item A description of how you extracted points from your Hough Transform and the selected lines superimposed on your edge image, for Part 3.
+          \item Your rectified image for Part 5.
+          \item Your extra example, for Part 6.
+        \end{itemize}
+      \item A README text file (not Word or PDF) that explains:
+        \begin{itemize}
+          \item Any additional features of your program.
+          \item Any instructions on how to run your program to reproduce your results.
+        \end{itemize}
+      \item Your source files.
+      \item The chosen images that you are processing.
+    \end{itemize}
+\end{enumerate}
+
+\end{document}

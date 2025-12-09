@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Scanner | CV583 Final Project</title>
+    <meta name="description" content="Advanced document scanning using edge detection, Hough Transform, and image rectification. A Computer Vision project by Mangesh Raut.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <span class="logo-icon">◈</span>
+                <span class="logo-text">DocScanner</span>
+            </a>
+            <div class="nav-links">
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#demo" class="nav-link">Demo</a>
+                <a href="#algorithm" class="nav-link">Algorithm</a>
+                <a href="#about" class="nav-link">About</a>
+            </div>
+            <a href="https://github.com" target="_blank" class="nav-github">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge" data-animate="fade-up">
+                <span class="badge-dot"></span>
+                CV583 Final Project
+            </div>
+            <h1 class="hero-title" data-animate="fade-up" data-delay="100">
+                Transform Documents<br>
+                <span class="hero-gradient">With Precision</span>
+            </h1>
+            <p class="hero-subtitle" data-animate="fade-up" data-delay="200">
+                Advanced document scanning powered by computer vision.<br>
+                Edge detection. Hough Transform. Perfect rectification.
+            </p>
+            <div class="hero-actions" data-animate="fade-up" data-delay="300">
+                <a href="#demo" class="btn btn-primary">
+                    <span>Try Demo</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+                <a href="#algorithm" class="btn btn-secondary">
+                    Learn More
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual" data-animate="fade-up" data-delay="400">
+            <div class="hero-card">
+                <div class="card-header">
+                    <div class="card-dots">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="card-title">scanner.py</span>
+                </div>
+                <pre class="card-code"><code><span class="code-keyword">from</span> document_scanner <span class="code-keyword">import</span> DocumentScanner
+
+scanner = DocumentScanner(<span class="code-string">"document.png"</span>)
+scanner.detect_edges()
+scanner.compute_hough_transform()
+scanner.rectify_image()
+scanner.save(<span class="code-string">"output.png"</span>)</code></pre>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-container">
+            <div class="stat-item" data-animate="fade-up">
+                <span class="stat-number">3</span>
+                <span class="stat-label">Implementations</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item" data-animate="fade-up" data-delay="100">
+                <span class="stat-number">6</span>
+                <span class="stat-label">Processing Steps</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item" data-animate="fade-up" data-delay="200">
+                <span class="stat-number">100%</span>
+                <span class="stat-label">Open Source</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item" data-animate="fade-up" data-delay="300">
+                <span class="stat-number">∞</span>
+                <span class="stat-label">Precision</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="section-header" data-animate="fade-up">
+            <span class="section-tag">Features</span>
+            <h2 class="section-title">Powerful Capabilities</h2>
+            <p class="section-subtitle">Everything you need for document processing</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card" data-animate="fade-up">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Edge Detection</h3>
+                <p class="feature-desc">Gaussian smoothing with Sobel operator for precise boundary identification</p>
+            </div>
+            <div class="feature-card" data-animate="fade-up" data-delay="100">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4h16v16H4z"/>
+                        <path d="M4 12h16M12 4v16"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Hough Transform</h3>
+                <p class="feature-desc">Parameter space voting algorithm for robust line detection</p>
+            </div>
+            <div class="feature-card" data-animate="fade-up" data-delay="200">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 3v18M3 12h18"/>
+                        <circle cx="12" cy="12" r="3"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Corner Detection</h3>
+                <p class="feature-desc">Automatic or interactive corner point identification</p>
+            </div>
+            <div class="feature-card" data-animate="fade-up" data-delay="300">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4l4 4m8 8l4 4M4 20l4-4m8-8l4-4"/>
+                        <rect x="8" y="8" width="8" height="8" rx="1"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Homography</h3>
+                <p class="feature-desc">Perspective transformation for perfect document rectification</p>
+            </div>
+            <div class="feature-card" data-animate="fade-up" data-delay="400">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                        <path d="M2 17l10 5 10-5"/>
+                        <path d="M2 12l10 5 10-5"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Multi-Platform</h3>
+                <p class="feature-desc">MATLAB, Python, and Web implementations available</p>
+            </div>
+            <div class="feature-card" data-animate="fade-up" data-delay="500">
+                <div class="feature-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M9 12l2 2 4-4"/>
+                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                </div>
+                <h3 class="feature-title">Fully Tested</h3>
+                <p class="feature-desc">Comprehensive test suite with CI/CD automation</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section id="demo" class="demo">
+        <div class="section-header" data-animate="fade-up">
+            <span class="section-tag">Interactive</span>
+            <h2 class="section-title">Try It Yourself</h2>
+            <p class="section-subtitle">Experience the document scanning pipeline</p>
+        </div>
+
+        <div class="demo-container">
+            <!-- Upload Area -->
+            <div class="upload-area" data-animate="fade-up">
+                <div class="upload-box" id="uploadBox">
+                    <input type="file" id="imageInput" accept="image/*" class="upload-input">
+                    <div class="upload-content">
+                        <div class="upload-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                                <path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14"/>
+                                <rect x="3" y="3" width="18" height="18" rx="2"/>
+                            </svg>
+                        </div>
+                        <p class="upload-text">Drop an image here or click to upload</p>
+                        <span class="upload-hint">PNG, JPG up to 10MB</span>
+                    </div>
+                </div>
+                <div class="example-btns">
+                    <button class="example-btn" data-example="1">
+                        <span class="example-icon">📄</span>
+                        Example 1
+                    </button>
+                    <button class="example-btn" data-example="2">
+                        <span class="example-icon">📝</span>
+                        Example 2
+                    </button>
+                </div>
+            </div>
+
+            <!-- Processing Pipeline -->
+            <div class="pipeline" id="pipeline" style="display: none;">
+                <div class="pipeline-header">
+                    <h3>Processing Pipeline</h3>
+                    <button id="processBtn" class="btn btn-primary btn-sm">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="5 3 19 12 5 21 5 3"/>
+                        </svg>
+                        Process
+                    </button>
+                </div>
+
+                <!-- Step 1: Original -->
+                <div class="pipeline-step">
+                    <div class="step-header">
+                        <div class="step-number">01</div>
+                        <div class="step-info">
+                            <h4>Original Image</h4>
+                            <p>Input document photograph</p>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="originalCanvas" class="step-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Step 2: Edge Detection -->
+                <div class="pipeline-step">
+                    <div class="step-header">
+                        <div class="step-number">02</div>
+                        <div class="step-info">
+                            <h4>Edge Detection</h4>
+                            <p>Sobel operator with Gaussian blur</p>
+                        </div>
+                        <div class="step-control">
+                            <label>Threshold</label>
+                            <input type="range" id="edgeThreshold" min="50" max="200" value="100" class="slider">
+                            <span id="thresholdValue">100</span>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="edgeCanvas" class="step-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Step 3: Hough Transform -->
+                <div class="pipeline-step">
+                    <div class="step-header">
+                        <div class="step-number">03</div>
+                        <div class="step-info">
+                            <h4>Hough Transform</h4>
+                            <p>Parameter space accumulator</p>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="houghCanvas" class="step-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Step 4: Lines -->
+                <div class="pipeline-step">
+                    <div class="step-header">
+                        <div class="step-number">04</div>
+                        <div class="step-info">
+                            <h4>Detected Lines</h4>
+                            <p>Peak detection in Hough space</p>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="linesCanvas" class="step-canvas"></canvas>
+                    </div>
+                </div>
+
+                <!-- Step 5: Corners -->
+                <div class="pipeline-step">
+                    <div class="step-header">
+                        <div class="step-number">05</div>
+                        <div class="step-info">
+                            <h4>Corner Selection</h4>
+                            <p>Click corners: TL → TR → BR → BL</p>
+                        </div>
+                        <div class="corner-controls">
+                            <span class="corner-count" id="cornerCount">0/4</span>
+                            <button id="resetCorners" class="btn btn-ghost btn-sm">Reset</button>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="cornerCanvas" class="step-canvas interactive"></canvas>
+                    </div>
+                </div>
+
+                <!-- Step 6: Result -->
+                <div class="pipeline-step result-step">
+                    <div class="step-header">
+                        <div class="step-number">06</div>
+                        <div class="step-info">
+                            <h4>Rectified Document</h4>
+                            <p>Homography transformation applied</p>
+                        </div>
+                    </div>
+                    <div class="step-canvas-container">
+                        <canvas id="rectifiedCanvas" class="step-canvas"></canvas>
+                    </div>
+                    <button id="downloadBtn" class="btn btn-primary" style="display: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        Download Result
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Algorithm Section -->
+    <section id="algorithm" class="algorithm">
+        <div class="section-header" data-animate="fade-up">
+            <span class="section-tag">Technical</span>
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">The mathematics behind document scanning</p>
+        </div>
+
+        <div class="algorithm-grid">
+            <div class="algorithm-card" data-animate="fade-up">
+                <div class="algo-number">01</div>
+                <h3>Edge Detection</h3>
+                <div class="algo-formula">
+                    <code>G = √(Gx² + Gy²)</code>
+                </div>
+                <p>Apply Gaussian smoothing to reduce noise, then use Sobel operators to compute image gradients. The magnitude reveals edges.</p>
+                <div class="algo-details">
+                    <span>σ = 1.0</span>
+                    <span>Kernel: 3×3</span>
+                </div>
+            </div>
+
+            <div class="algorithm-card" data-animate="fade-up" data-delay="100">
+                <div class="algo-number">02</div>
+                <h3>Hough Transform</h3>
+                <div class="algo-formula">
+                    <code>ρ = x·cos(θ) + y·sin(θ)</code>
+                </div>
+                <p>Transform edge pixels to parameter space where collinear points accumulate votes, enabling robust line detection.</p>
+                <div class="algo-details">
+                    <span>θ: 0° to 180°</span>
+                    <span>ρ: ±√(w²+h²)</span>
+                </div>
+            </div>
+
+            <div class="algorithm-card" data-animate="fade-up" data-delay="200">
+                <div class="algo-number">03</div>
+                <h3>Homography</h3>
+                <div class="algo-formula">
+                    <code>p' = H · p</code>
+                </div>
+                <p>Compute 3×3 transformation matrix from corner correspondences using SVD to map perspective to orthogonal view.</p>
+                <div class="algo-details">
+                    <span>8 DOF</span>
+                    <span>DLT Algorithm</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack -->
+    <section class="tech-stack">
+        <div class="section-header" data-animate="fade-up">
+            <span class="section-tag">Technology</span>
+            <h2 class="section-title">Built With</h2>
+        </div>
+        <div class="tech-grid" data-animate="fade-up">
+            <div class="tech-item">
+                <div class="tech-icon">🔬</div>
+                <span>MATLAB</span>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🐍</div>
+                <span>Python</span>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">📷</div>
+                <span>OpenCV</span>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🔢</div>
+                <span>NumPy</span>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🌐</div>
+                <span>JavaScript</span>
+            </div>
+            <div class="tech-item">
+                <div class="tech-icon">🧪</div>
+                <span>pytest</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="about-container">
+            <div class="about-content" data-animate="fade-up">
+                <span class="section-tag">About</span>
+                <h2 class="section-title">CV583 Final Project</h2>
+                <p class="about-text">
+                    This project demonstrates fundamental computer vision concepts through a practical document scanning application. 
+                    It combines edge detection, line detection using Hough Transform, and perspective rectification to transform 
+                    photographs of documents into clean, top-down views.
+                </p>
+                <div class="about-author">
+                    <div class="author-avatar">MR</div>
+                    <div class="author-info">
+                        <span class="author-name">Mangesh Raut</span>
+                        <span class="author-course">Computer Vision • CV583</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-links" data-animate="fade-up" data-delay="100">
+                <a href="../README.md" class="about-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+                        <polyline points="14 2 14 8 20 8"/>
+                        <line x1="16" y1="13" x2="8" y2="13"/>
+                        <line x1="16" y1="17" x2="8" y2="17"/>
+                        <polyline points="10 9 9 9 8 9"/>
+                    </svg>
+                    Documentation
+                </a>
+                <a href="../QUICKSTART.md" class="about-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                    </svg>
+                    Quick Start
+                </a>
+                <a href="https://github.com" class="about-link">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <span class="logo-icon">◈</span>
+                <span>DocScanner</span>
+            </div>
+            <p class="footer-text">
+                CV583 Computer Vision Final Project © 2025
+            </p>
+            <div class="footer-links">
+                <a href="../LICENSE">MIT License</a>
+                <span>•</span>
+                <a href="../CONTRIBUTING.md">Contribute</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
